@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, json, request
 
 import model
+import data
+import statistical_model
 
 app = Flask(__name__)
 
@@ -34,5 +36,21 @@ def postQuestion():
         return 'Content-Type not supported'
 
 
+# GET /test1
+@app.route('/test1')
+def testing1():
+    
+    statistical_model.fn_create_and_save_model1()
+    statistical_model.fn_create_and_save_model2()
+
+    return 'done'
+
+# GET /test2
+@app.route('/test2')
+def testing2():
+    
+    statistical_model.fn_load_model()
+
+    return 'done'
 
 app.run(port=5000)
