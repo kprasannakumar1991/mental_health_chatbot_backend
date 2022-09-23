@@ -2,9 +2,8 @@ import numpy as np
 import pandas as pd
 
 from utils.text_preprocessing import remove_special_characters
-from utils import mlfuncs_clfn as ml
 
-def fn_create_QA_dataframe():
+def fn_create_dataset_for_ml():
     dff = pd.read_csv('csv/mental_health_faq.csv')
     dff.columns = [i.lower() for i in dff.columns]
     dff.drop('question_id', inplace=True, axis=1)
@@ -56,19 +55,4 @@ def fn_create_invalid_pairs(dff):
 
     return df_wrong
 
-
-def fn_load_final_dataframe():
-    df_final = pd.read_csv('csv/mental_health_faq_final.csv')
-
-    return df_final
         
-
-def fn_split_data():
-    df_final = pd.read_csv('csv/mental_health_faq_final.csv')
-
-    df_tr, df_eval, df_ts = ml.fn_tr_eval_ts_split_clf(df_final, eval_size = 0.2, ts_size = 0.2)
-
-    return df_tr, df_eval, df_ts
-
-
-

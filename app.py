@@ -23,34 +23,37 @@ def postQuestion():
     if (content_type == 'application/json'):
         body = request.get_json()
         question = body['question']
-        answers = model.getAnswers(question)
+        valid_question, top_answers = statistical_model.fn_find_answer(question)
         
-        responseObj = {
-            'question': question,
-            'answers': answers
-        }
-
-        return jsonify(responseObj)
+        resposneObj = {'valid_question': valid_question, 'answers': top_answers}
+        return jsonify(resposneObj)
         
     else:
         return 'Content-Type not supported'
 
 
-# GET /test1
-@app.route('/test1')
-def testing1():
-    
-    statistical_model.fn_create_and_save_model1()
-    statistical_model.fn_create_and_save_model2()
 
-    return 'done'
+# GET /createDataset
+@app.route('/createDataset')
+def createDataset():
+    data.fn_create_dataset_for_ml()
+    
+    return 'dataset final_csv created'
+
+# GET /test1
+@app.route('/createStatisticalModel')
+def createStatisticalModel():
+    
+    # statistical_model.fn_create_pure_model()
+    statistical_model.fn_create_statistical_model()
+
+    return 'Statistical Model and StandardScaler Model created'
 
 # GET /test2
-@app.route('/test2')
-def testing2():
-    
-    statistical_model.fn_load_model()
+@app.route('/loadStatisticalModel')
+def loadStatisticalModel():
+    statistical_model.fn_load_statistical_model()
 
     return 'done'
 
-app.run(port=5000)
+app.run(port=5000, debug=True)
