@@ -6,7 +6,7 @@ import statistical_model
 
 app = Flask(__name__)
 
-# GET url:port/
+# Returns HomePage
 @app.route('/')
 def getHomePage():
     responseObj = {
@@ -16,44 +16,73 @@ def getHomePage():
 
     return jsonify(responseObj)
 
-# POST url:port/question
-@app.route('/question', methods=['POST'])
-def postQuestion():
-    content_type = request.headers.get('Content-Type')
-    if (content_type == 'application/json'):
-        body = request.get_json()
-        question = body['question']
-        valid_question, top_answers = statistical_model.fn_find_answer(question)
-        
-        resposneObj = {'valid_question': valid_question, 'answers': top_answers}
-        return jsonify(resposneObj)
-        
-    else:
-        return 'Content-Type not supported'
 
-
-
-# GET /createDataset
+# Creates data set for the model
 @app.route('/createDataset')
 def createDataset():
     data.fn_create_dataset_for_ml()
     
     return 'dataset final_csv created'
 
-# GET /test1
+
+##################### Statistical features ###########################
+######################################################################
+######################################################################
+
+# Returns the answer(s) for the asked question
+# It uses the model created from Statistical features only
+@app.route('/question', methods=['POST'])
+def postQuestion():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        body = request.get_json()
+        question = body['question']
+        question, top_answers = statistical_model.fn_find_answer(question)
+        
+        resposneObj = {'_question': question,'answers': top_answers}
+        return jsonify(resposneObj)
+        
+    else:
+        return 'Content-Type not supported'
+
+# Initialize and create a Model
 @app.route('/createStatisticalModel')
-def createStatisticalModel():
-    
-    # statistical_model.fn_create_pure_model()
-    statistical_model.fn_create_statistical_model()
+def createStatisticalModel():    
+    statistical_model.fn_create_model()
 
-    return 'Statistical Model and StandardScaler Model created'
+    return 'Model based on only Statistical features created'
 
-# GET /test2
-@app.route('/loadStatisticalModel')
-def loadStatisticalModel():
-    statistical_model.fn_load_statistical_model()
+######################################################################
+######################################################################
 
-    return 'done'
+
+##################### Combined features ##############################
+######################################################################
+######################################################################
+# Initialize and create a Model
+@app.route('/createTFIDFModel')
+def createTFIDFModel():
+    model.fn_create_model()
+
+    return 'Model based on TFIDF & Statistical features created'
+
+# Returns the answer(s) for the asked question
+# It uses the model created from TF-IDF & Statistical features combined
+@app.route('/question1', methods=['POST'])
+def postQuestion1():
+    content_type = request.headers.get('Content-Type')
+    if (content_type == 'application/json'):
+        body = request.get_json()
+        question = body['question']
+        question, top_answers = model.fn_find_answer(question)
+        
+        resposneObj = {'_question': question,'answers': top_answers}
+        return jsonify(resposneObj)
+        
+    else:
+        return 'Content-Type not supported'
+
+######################################################################
+######################################################################
 
 app.run(port=5000, debug=True)

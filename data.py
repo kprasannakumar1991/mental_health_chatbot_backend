@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from utils.text_preprocessing import remove_special_characters
+from utils.text_preprocessing import text_process_question, text_process_answer
 
 def fn_create_dataset_for_ml():
     dff = pd.read_csv('csv/mental_health_faq.csv')
@@ -10,8 +10,8 @@ def fn_create_dataset_for_ml():
     dff.columns = ['q', 'a']
     
     # data cleaning
-    dff.q = dff.q.apply(remove_special_characters)
-    dff.a = dff.a.apply(remove_special_characters)
+    dff.q = dff.q.apply(text_process_question)
+    dff.a = dff.a.apply(text_process_answer)
 
     # creating label for valid question-answer pairs
     dff = dff.assign(y = lambda row: 1)
@@ -28,7 +28,6 @@ def fn_create_dataset_for_ml():
     print(df_final.iloc[question_index+98]) # invalid pair
 
     df_final.to_csv('csv/mental_health_faq_final.csv', index=False)
-    pass
 
 
 def fn_create_invalid_pairs(dff):
