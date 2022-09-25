@@ -9,13 +9,7 @@ app = Flask(__name__)
 # Returns HomePage
 @app.route('/')
 def getHomePage():
-    responseObj = {
-        'msg': 'Welcome to Mental Health chat bot',
-        'code': 1
-    }
-
-    return jsonify(responseObj)
-
+    return "<h1>Welcome to Mental health Chat Bot</h1>"
 
 # Creates data set for the model
 @app.route('/createDataset')
@@ -88,4 +82,4 @@ def postQuestion1():
 # port = int(os.environ.get('PORT', 5000))
 # app.run(host='0.0.0.0', port=port)
 
-app.run()
+app.run(debug=True)
