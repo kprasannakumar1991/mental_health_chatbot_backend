@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from utils.text_preprocessing import text_process_question
-from utils.fuzzy import fn_common_words_count, fn_fuzz_partial_ratio, fn_fuzz_ratio, fn_fuzz_token_set_ratio, fn_fuzz_token_sort_ratio, jaccard_similarity
+from utils.statistical_features import fn_common_words_count, fn_fuzz_partial_ratio, fn_fuzz_ratio, fn_fuzz_token_set_ratio, fn_fuzz_token_sort_ratio, jaccard_similarity
 
 
 def fn_create_model():
@@ -121,9 +121,11 @@ def fn_find_answer(question):
     print(indices)
 
     print("_____________tfidf_________________")
+    print('Top common words ', np.max(common_words_count))
     top_answers = []
 
-    if (valid_prob + 0.20 > invalid_prob) or np.max(common_words_count) >= 2:
+    if (valid_prob + 0.20 > invalid_prob):
+    # if (valid_prob + 0.20 > invalid_prob) or np.max(common_words_count) >= 2:
             for i in indices:
                     ans = {
                                 '_q_no': str(i),

@@ -4,7 +4,7 @@ import random
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 import joblib
-from utils.fuzzy import fn_common_words_count, fn_fuzz_partial_ratio, fn_fuzz_ratio, fn_fuzz_token_set_ratio, fn_fuzz_token_sort_ratio, jaccard_similarity
+from utils.statistical_features import fn_common_words_count, fn_fuzz_partial_ratio, fn_fuzz_ratio, fn_fuzz_token_set_ratio, fn_fuzz_token_sort_ratio, jaccard_similarity
 from utils.text_preprocessing import  text_process_question
 
 
@@ -90,8 +90,8 @@ def fn_find_answer(question):
 
         print("_____________stats_________________")
         top_answers = []
-
-        if (valid_prob + 0.20 > invalid_prob) or np.max(common_words_count) >= 2:
+        if (valid_prob + 0.20 > invalid_prob):
+        # if (valid_prob + 0.20 > invalid_prob) or np.max(common_words_count) >= 2:
                 for i in indices:
                         ans = {
                                 '_q_no': str(i),

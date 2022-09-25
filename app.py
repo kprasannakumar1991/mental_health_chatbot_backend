@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, json, request
 
 import model
-import data
+import utils.data_creation as data_creation
 import statistical_model
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def getHomePage():
 # Creates data set for the model
 @app.route('/createDataset')
 def createDataset():
-    data.fn_create_dataset_for_ml()
+    data_creation.fn_create_dataset_for_ml()
     
     return 'dataset final_csv created'
 

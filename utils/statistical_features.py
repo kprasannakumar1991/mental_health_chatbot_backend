@@ -1,6 +1,6 @@
 from fuzzywuzzy import fuzz
 
-from utils.text_preprocessing import remove_stopwords
+from utils.text_preprocessing import remove_special_characters, remove_stopwords
 
 
 '''
@@ -34,8 +34,8 @@ def fn_fuzz_token_set_ratio(row):
 
 def fn_common_words_count(row):
     ''' Valid pairs have similar words in both question and answer'''
-    q = remove_stopwords(row['q'])
-    a = remove_stopwords(row['a'])
+    q = remove_special_characters(row['q'])
+    a = remove_special_characters(row['a'])
     return len(list(set(q.split())&set(a.split())))
 
 
