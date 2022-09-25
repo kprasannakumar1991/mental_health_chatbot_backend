@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, json, request
-
+from flask import Flask, jsonify, request
+import os
 import model
 import utils.data_creation as data_creation
 import statistical_model
@@ -85,4 +85,5 @@ def postQuestion1():
 ######################################################################
 ######################################################################
 
-app.run(port=5000, debug=True)
+port = int(os.environ.get('PORT', 5000))
+app.run(port=port, debug=True)
