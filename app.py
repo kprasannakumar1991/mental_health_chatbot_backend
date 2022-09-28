@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import os
 import model
 import utils.data_creation as data_creation
 import statistical_model
 
 app = Flask(__name__)
+CORS(app)
 
 # Returns HomePage
 @app.route('/')

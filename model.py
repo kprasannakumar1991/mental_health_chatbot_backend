@@ -77,6 +77,7 @@ def fn_find_answer(question):
     # load the dataset
     df = pd.read_csv('csv/mental_health_faq_final.csv')
     df = df[df['y']==1]
+    df_original = df.copy();
     df['q'] = question
    
     # for the asked question create the required features
@@ -107,7 +108,7 @@ def fn_find_answer(question):
     invalid_pair_probs = model.predict_proba(df_features)[:, 0]
     invalid_prob = np.max(invalid_pair_probs)
     print('Max Invalid prob ', invalid_prob)
-    top_probs = np.sort(invalid_pair_probs)[::-1][:5]
+    top_probs = np.sort(invalid_pair_probs)[::-1][:3]
     print(top_probs)
 
     print("_____________tfidf_________________")
@@ -115,9 +116,9 @@ def fn_find_answer(question):
     valid_pair_probs = model.predict_proba(df_features)[:, 1]
     valid_prob = np.max(valid_pair_probs)
     print('Max Valid prob ', valid_prob)
-    top_probs = np.sort(valid_pair_probs)[::-1][:5]
+    top_probs = np.sort(valid_pair_probs)[::-1][:3]
     print(top_probs)
-    indices = np.argsort(valid_pair_probs)[::-1][:5]
+    indices = np.argsort(valid_pair_probs)[::-1][:3]
     print(indices)
 
     print("_____________tfidf_________________")
@@ -129,8 +130,9 @@ def fn_find_answer(question):
             for i in indices:
                     ans = {
                                 '_q_no': str(i),
-                                'question_answer': df.iloc[i].a[: 50], 
-                                'correctness_probability': valid_pair_probs[i]
+                                'question': df_original.iloc[i].q,
+                                'answer': df.iloc[i].a, 
+                                'probability': round(valid_pair_probs[i] * 100, 2)
                         }
                     top_answers.append(ans)
 
