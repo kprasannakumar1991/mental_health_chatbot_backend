@@ -51,11 +51,14 @@ def fn_find_answer(question):
         scaler = joblib.load('pickle/scaler.pkl')
         model = joblib.load('pickle/model.pkl')
 
+       # clean the input question
         question = text_process_question(question)
+        # Used to send back response
+        df_original = pd.read_csv('csv/mental_health_faq.csv');
+        # Used by ML 
         df = pd.read_csv('csv/mental_health_faq_final.csv')
 
         df = df[df['y']==1]
-        df_original = df.copy();
         df['q'] = question
 
         fuzz_partial_ratio = df.apply(fn_fuzz_partial_ratio, axis=1)
@@ -96,8 +99,8 @@ def fn_find_answer(question):
                 for i in indices:
                         ans = {
                                  '_q_no': str(i),
-                                'question': df_original.iloc[i].q,
-                                'answer': df.iloc[i].a, 
+                                'question': df_original.iloc[i].Questions,
+                                'answer': df_original.iloc[i].Answers, 
                                 'probability': round(valid_pair_probs[i] * 100, 2)
                         }
                                 

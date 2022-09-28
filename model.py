@@ -73,11 +73,12 @@ def fn_find_answer(question):
 
     # clean the input question
     question = text_process_question(question)
-
-    # load the dataset
+     # Used to send back response
+    df_original = pd.read_csv('csv/mental_health_faq.csv');
+    # Used by ML 
     df = pd.read_csv('csv/mental_health_faq_final.csv')
+
     df = df[df['y']==1]
-    df_original = df.copy();
     df['q'] = question
    
     # for the asked question create the required features
@@ -129,10 +130,10 @@ def fn_find_answer(question):
     # if (valid_prob + 0.20 > invalid_prob) or np.max(common_words_count) >= 2:
             for i in indices:
                     ans = {
-                                '_q_no': str(i),
-                                'question': df_original.iloc[i].q,
-                                'answer': df.iloc[i].a, 
-                                'probability': round(valid_pair_probs[i] * 100, 2)
+                            '_q_no': str(i),
+                            'question': df_original.iloc[i].Questions,
+                            'answer': df_original.iloc[i].Answers, 
+                            'probability': round(valid_pair_probs[i] * 100, 2)
                         }
                     top_answers.append(ans)
 
