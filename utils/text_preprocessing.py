@@ -71,7 +71,8 @@ def lemmatize(sentence):
 
 def text_process_question(question):
     # question = remove_stopwords(question)
-    question = lemmatize(question)
+    # question = lemmatize(question)
+    question = remove_special_characters(question)
     return question
 
 
