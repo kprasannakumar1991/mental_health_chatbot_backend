@@ -7,10 +7,15 @@ import joblib
 from utils.statistical_features import fn_common_words_count, fn_fuzz_partial_ratio, fn_fuzz_ratio, fn_fuzz_token_set_ratio, fn_fuzz_token_sort_ratio, jaccard_similarity
 from utils.text_preprocessing import  text_process_question
 
+##############################################################
+# NOT USED IN THE APP, JUST PRESENT FOR REFERENCE
+
+# A Model is trained just by using Statistical features
+##############################################################
 
 def fn_create_model():
         random.seed(10)
-        df_final = pd.read_csv('csv/mental_health_faq_final.csv')
+        df_final = pd.read_csv('../csv/mental_health_faq_final.csv')
         df = df_final.copy()
         # features (used to testing purpose)
         fuzz_partial_ratio = df.apply(fn_fuzz_partial_ratio, axis=1)
@@ -26,7 +31,7 @@ def fn_create_model():
         scaler = StandardScaler()
         scaler.fit(df_features.iloc[:, :-1])
         df_features.iloc[:, :-1] = scaler.transform(df_features.iloc[:, :-1])
-        joblib.dump(scaler, 'pickle/scaler.pkl')
+        joblib.dump(scaler, 'scaler.pkl')
 
         X_tr = df_features.iloc[:, :-1].values
         y_tr = df_features.iloc[:, -1].values
@@ -48,15 +53,15 @@ def fn_load_statistical_model():
 
 
 def fn_find_answer(question):
-        scaler = joblib.load('pickle/scaler.pkl')
-        model = joblib.load('pickle/model.pkl')
+        scaler = joblib.load('scaler.pkl')
+        model = joblib.load('model.pkl')
 
        # clean the input question
         question = text_process_question(question)
         # Used to send back response
-        df_original = pd.read_csv('csv/mental_health_faq.csv');
+        df_original = pd.read_csv('../csv/mental_health_faq.csv');
         # Used by ML 
-        df = pd.read_csv('csv/mental_health_faq_final.csv')
+        df = pd.read_csv('../csv/mental_health_faq_final.csv')
 
         df = df[df['y']==1]
         df['q'] = question
