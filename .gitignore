@@ -1,5 +1,2 @@
 venv/
 __pycache__/
-
-# Procfile is required only in Heroku. We are migrating to AWS
-Procfile
