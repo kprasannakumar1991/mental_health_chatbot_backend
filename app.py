@@ -9,7 +9,7 @@ CORS(application)
 # Returns HomePage
 @application.route('/')
 def getHomePage():
-    return "<h1>Welcome to Mental health Chat Bot</h1>"
+    return "<h1>Welcome to Mental Health Chat Bot</h1>"
 
 # Creates data set for the model
 @application.route('/createDataset')
@@ -41,5 +41,5 @@ def question():
     else:
         return 'Content-Type not supported'
 
-if __name__ == '__main__':
-    application.run()
+# if __name__ == '__main__':
+#     application.run()
