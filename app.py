@@ -3,16 +3,16 @@ from flask_cors import CORS
 import model
 import utils.data_creation as data_creation
 
-app = Flask(__name__)
-CORS(app)
+application = Flask(__name__)
+CORS(application)
 
 # Returns HomePage
-@app.route('/')
+@application.route('/')
 def getHomePage():
     return "<h1>Welcome to Mental health Chat Bot</h1>"
 
 # Creates data set for the model
-@app.route('/createDataset')
+@application.route('/createDataset')
 def createDataset():
     data_creation.fn_create_dataset_for_ml()
     
@@ -20,14 +20,14 @@ def createDataset():
 
 
 # Initialize and create a Model
-@app.route('/createModel')
+@application.route('/createModel')
 def createModel():
     model.fn_create_model()
 
     return 'Model based on TFIDF & Statistical features created'
 
 # Returns the answer(s) for the asked question
-@app.route('/question1', methods=['POST'])
+@application.route('/question1', methods=['POST'])
 def question():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
@@ -42,4 +42,4 @@ def question():
         return 'Content-Type not supported'
 
 if __name__ == '__main__':
-    app.run()
+    application.run()
